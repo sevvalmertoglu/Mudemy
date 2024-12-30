@@ -1,0 +1,6 @@
+@Mudemy.API_HostAddress = http://localhost:5178
+
+GET {{Mudemy.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
