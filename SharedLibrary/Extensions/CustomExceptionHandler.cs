@@ -29,7 +29,7 @@ namespace SharedLibrary.Extensions
                     {
                         var ex = errorFeature.Error;
 
-                        ErrorDto errorDto = null;
+                        ErrorDto? errorDto = null;
 
                         if (ex is CustomException)
                         {
