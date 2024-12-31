@@ -22,14 +22,6 @@ namespace Mudemy.API.Controllers
             _userService = userService;
         }
 
-        [HttpGet("AddRoleToUser")]
-        public async Task<IActionResult> AddRoleToUser()
-        {
-            await _userService.AddRoleToFirstUser();
-
-            return Ok();
-        }
-
         //api/user
         [HttpPost]
         public async Task<IActionResult> CreateUser(CreateUserDto createUserDto)

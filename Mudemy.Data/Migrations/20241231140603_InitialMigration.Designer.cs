@@ -12,8 +12,8 @@ using Mudemy.Data;
 namespace Mudemy.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241230235915_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241231140603_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

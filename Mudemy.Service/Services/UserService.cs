@@ -59,11 +59,12 @@ namespace Mudemy.Service.Services
                 throw new InvalidOperationException("No users found in the database.");
             }
 
-            await _roleManager.CreateAsync(new IdentityRole("admin")); // tablolara ekler
-            await _roleManager.CreateAsync(new IdentityRole("editor"));
+            await _roleManager.CreateAsync(new IdentityRole("instructor")); // tablolara ekler
+            await _roleManager.CreateAsync(new IdentityRole("user"));
 
-            await _userManager.AddToRoleAsync(firstUser, "admin");
-            await _userManager.AddToRoleAsync(firstUser, "editor");
+            await _userManager.AddToRoleAsync(firstUser, "instructor");
+            await _userManager.AddToRoleAsync(firstUser, "user");
         }
+
     }
 }

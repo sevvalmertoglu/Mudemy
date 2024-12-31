@@ -81,7 +81,7 @@ builder.Services.AddAuthentication(options =>
 // Configure Authorization Policies
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminRole", policy => policy.RequireClaim("roles", "admin"));
+    options.AddPolicy("InstructorRole", policy => policy.RequireClaim("roles", "instructor"));
 });
 
 // Add Controllers and FluentValidation
@@ -100,6 +100,14 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
+
+// Apply Seed Data
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var dbContext = services.GetRequiredService<AppDbContext>();
+    await SeedData.InitializeAsync(services);
+}
 
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
