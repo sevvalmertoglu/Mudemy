@@ -66,5 +66,24 @@ namespace Mudemy.Service.Services
             await _userManager.AddToRoleAsync(firstUser, "user");
         }
 
+          public async Task<Response<UserAppDto>> DeleteUserAsync(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return Response<UserAppDto>.Fail("User not found", 404, true);
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(e => e.Description).ToList();
+                return Response<UserAppDto>.Fail(new ErrorDto(errors, true), 500);
+            }
+
+            return Response<UserAppDto>.Success(200); // Silme işlemi başarılı.
+        }
     }
 }

@@ -22,7 +22,6 @@ namespace Mudemy.API.Controllers
             _userService = userService;
         }
 
-        //api/user
         [HttpPost]
         public async Task<IActionResult> CreateUser(CreateUserDto createUserDto)
         {
@@ -41,5 +40,19 @@ namespace Mudemy.API.Controllers
             var userName = identity.Name;
             return ActionResultInstance(await _userService.GetUserByNameAsync(userName));
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var result = await _userService.DeleteUserAsync(id);
+
+            if (!result.IsSuccessful)
+            {
+                return BadRequest(result.Message);
+            }
+
+            return Ok("User deleted successfully.");
+        }
+
     }
 }

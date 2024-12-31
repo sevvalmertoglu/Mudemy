@@ -14,5 +14,6 @@ namespace Mudemy.Core.Services
         Task<Response<UserAppDto>> GetUserByNameAsync(string userName);
 
         Task AddRoleToFirstUser();
+        Task<Response<UserAppDto>> DeleteUserAsync(string id); 
     }
 }
