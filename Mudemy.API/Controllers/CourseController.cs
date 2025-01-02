@@ -16,9 +16,9 @@ namespace Mudemy.API.Controllers
     [ApiController]
     public class CourseController : CustomBaseController
     {
-        private readonly IServiceGeneric<Course, CourseDto> _courseService;
+        private readonly ICourseService _courseService;
 
-        public CourseController(IServiceGeneric<Course, CourseDto> courseService)
+        public CourseController(ICourseService courseService)
         {
             _courseService = courseService;
         }
@@ -26,30 +26,35 @@ namespace Mudemy.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCourses()
         {
-            var userClaims = User.Claims;
+            return ActionResultInstance(await _courseService.GetAllCoursesAsync());
+        }
 
-            return ActionResultInstance(await _courseService.GetAllAsync());
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetCourseById(int id)
+        {
+            return ActionResultInstance(await _courseService.GetCourseByIdAsync(id));
         }
 
         [Authorize(Policy = "InstructorRole")]
         [HttpPost]
         public async Task<IActionResult> SaveCourse(CourseDto courseDto)
         {
-            return ActionResultInstance(await _courseService.AddAsync(courseDto));
+            return ActionResultInstance(await _courseService.AddCourseAsync(courseDto));
         }
 
         [Authorize(Policy = "InstructorRole")]
-        [HttpPut]
-        public async Task<IActionResult> UpdateCourse(CourseDto courseDto)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCourse(int id, UpdateCourseDto updateCourseDto)
         {
-            return ActionResultInstance(await _courseService.Update(courseDto, courseDto.Id));
+            return ActionResultInstance(await _courseService.UpdateCourseAsync(id, updateCourseDto));
         }
-        
+
         [Authorize(Policy = "InstructorRole")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourse(int id)
         {
-            return ActionResultInstance(await _courseService.Remove(id));
+            return ActionResultInstance(await _courseService.DeleteCourseAsync(id));
         }
     }
+
 }
