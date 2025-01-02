@@ -85,5 +85,27 @@ namespace Mudemy.Service.Services
 
             return Response<UserAppDto>.Success(200); // Silme işlemi başarılı.
         }
+
+        public async Task<Response<UserAppDto>> UpdateUserProfileAsync(string id, CreateUserDto updateUserDto)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return Response<UserAppDto>.Fail("User not found", 404, true);
+            }
+
+            user.UserName = updateUserDto.UserName ?? user.UserName;
+            user.Email = updateUserDto.Email ?? user.Email;
+            
+            if (!string.IsNullOrEmpty(updateUserDto.Password))
+            {
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                await _userManager.ResetPasswordAsync(user, token, updateUserDto.Password);
+            }
+
+            await _userManager.UpdateAsync(user);
+            return Response<UserAppDto>.Success(200);
+        }
+
     }
 }
