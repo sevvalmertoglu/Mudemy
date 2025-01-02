@@ -20,19 +20,10 @@ namespace Mudemy.API.Controllers
             _authenticationService = authenticationService;
         }
 
-        //api/auth/
         [HttpPost]
-        public async Task<IActionResult> CreateToken(LoginDto loginDto)
+        public async Task<IActionResult> Login(LoginDto loginDto)
         {
             var result = await _authenticationService.CreateTokenAsync(loginDto);
-
-            return ActionResultInstance(result);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> RevokeRefreshToken(RefreshTokenDto refreshTokenDto)
-        {
-            var result = await _authenticationService.RevokeRefreshToken(refreshTokenDto.Token);
 
             return ActionResultInstance(result);
         }
@@ -45,5 +36,13 @@ namespace Mudemy.API.Controllers
 
             return ActionResultInstance(result);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout(RefreshTokenDto refreshTokenDto)
+        {
+            var result = await _authenticationService.RevokeRefreshToken(refreshTokenDto.Token);
+            return ActionResultInstance(result);
+        }
+
     }
 }

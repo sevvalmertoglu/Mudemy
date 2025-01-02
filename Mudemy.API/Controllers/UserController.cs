@@ -22,14 +22,14 @@ namespace Mudemy.API.Controllers
             _userService = userService;
         }
 
-        [HttpPost]
+        [HttpPost("Register")]
         public async Task<IActionResult> CreateUser(CreateUserDto createUserDto)
         {
             return ActionResultInstance(await _userService.CreateUserAsync(createUserDto));
         }
 
         [Authorize]
-        [HttpGet]
+        [HttpGet("Profile")]
         public async Task<IActionResult> GetUser()
         {
             var identity = HttpContext.User.Identity;
@@ -41,6 +41,14 @@ namespace Mudemy.API.Controllers
             return ActionResultInstance(await _userService.GetUserByNameAsync(userName));
         }
 
+        [Authorize]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(string id, CreateUserDto updateUserDto)
+        {
+            return ActionResultInstance(await _userService.UpdateUserProfileAsync(id, updateUserDto));
+        }
+
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(string id)
         {
