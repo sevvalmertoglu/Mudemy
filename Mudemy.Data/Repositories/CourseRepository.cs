@@ -16,13 +16,5 @@ namespace Mudemy.Data.Repositories
         {
         }
 
-        public async Task<List<Course>> GetPagedList(int pageSize, int pageCount)
-        {
-            return await _context.Set<Course>()
-                .Skip((pageCount - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-        }
-
     }
 }
