@@ -60,13 +60,6 @@ namespace Mudemy.Service.Services
                 userList.Add(new Claim("roles", userRoleName));
             }
 
-
-            /*if (!string.IsNullOrEmpty(userApp.City))
-            {
-                userList.Add(new Claim("city", userApp.City));
-            }*/
-
-
             userList.AddRange(audiences.Select(x => new Claim(JwtRegisteredClaimNames.Aud, x)));
 
             return userList;
