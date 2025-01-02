@@ -11,7 +11,7 @@ namespace Mudemy.Data.Repositories
 {
     public class GenericRepository<Tentity> : IGenericRepository<Tentity> where Tentity : class
     {
-        protected readonly DbContext _context;
+        private readonly DbContext _context;
         private readonly DbSet<Tentity> _dbSet;
 
         public GenericRepository(AppDbContext context)
