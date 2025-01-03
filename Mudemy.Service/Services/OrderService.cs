@@ -32,7 +32,6 @@ namespace Mudemy.Service.Services
                 return Response<IEnumerable<OrderDto>>.Fail("User ID is required", 400, true);
             }
 
-            // Kullanıcı ID'sine göre siparişleri getirme
             if (!int.TryParse(userId, out int userIdInt))
             {
                 return Response<IEnumerable<OrderDto>>.Fail("Invalid User ID format", 400, true);
@@ -47,7 +46,6 @@ namespace Mudemy.Service.Services
                 return Response<IEnumerable<OrderDto>>.Fail("No orders found", 404, true);
             }
 
-            // Verileri DTO'ya dönüştürme
             var orderDtos = ObjectMapper.Mapper.Map<IEnumerable<OrderDto>>(orders);
 
             return Response<IEnumerable<OrderDto>>.Success(orderDtos, 200);
@@ -60,7 +58,6 @@ namespace Mudemy.Service.Services
                 return Response<OrderDto>.Fail("Invalid Order ID", 400, true);
             }
 
-            // Siparişi ID'ye göre getir ve detaylarını dahil et
             var order = await _orderRepository.Where(o => o.Id == id)
                                             .Include(o => o.OrderDetails)
                                             .ThenInclude(od => od.Course)
@@ -71,7 +68,6 @@ namespace Mudemy.Service.Services
                 return Response<OrderDto>.Fail("Order not found", 404, true);
             }
 
-            // Siparişi DTO'ya dönüştür
             var orderDto = ObjectMapper.Mapper.Map<OrderDto>(order);
 
             return Response<OrderDto>.Success(orderDto, 200);
@@ -84,15 +80,13 @@ namespace Mudemy.Service.Services
                 return Response<NoDataDto>.Fail("Invalid order details", 400, true);
             }
 
-            // Yeni bir sipariş oluştur
             var order = new Order
             {
                 UserId = createOrderDto.UserId,
                 OrderDate = DateTime.Now,
-                TotalPrice = 0 // Başlangıç fiyatı
+                TotalPrice = 0 
             };
 
-            // Sipariş detayları
             var orderDetails = new List<OrderDetail>();
             foreach (var courseId in createOrderDto.CourseIds)
             {
@@ -109,18 +103,16 @@ namespace Mudemy.Service.Services
                 };
 
                 orderDetails.Add(orderDetail);
-                order.TotalPrice += course.Price; // Toplam fiyatı artır
+                order.TotalPrice += course.Price; 
             }
 
-            // Siparişi ve detaylarını kaydet
             await _orderRepository.AddAsync(order);
             foreach (var detail in orderDetails)
             {
-                detail.OrderId = order.Id; // Sipariş ID'sini atama
+                detail.OrderId = order.Id; 
                 await _orderDetailRepository.AddAsync(detail);
             }
 
-            // Veritabanı işlemlerini tamamla
             await _unitOfWork.CommmitAsync();
 
             return Response<NoDataDto>.Success(201);

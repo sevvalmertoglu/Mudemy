@@ -22,10 +22,8 @@ using Mudemy.Service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add configuration for accessing app settings
 var configuration = builder.Configuration;
 
-// Register services in DI container
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
@@ -33,15 +31,14 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 builder.Services.AddScoped(typeof(IServiceGeneric<,>), typeof(ServiceGeneric<,>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddScoped<ICourseService, CourseService>();
 
-// Configure Entity Framework and SQL Server
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(configuration.GetConnectionString("SqlServer"),
         sqlOptions => sqlOptions.MigrationsAssembly("Mudemy.Data"));
 });
 
-// Configure Identity
 builder.Services.AddIdentity<UserApp, IdentityRole>(options =>
 {
     options.User.RequireUniqueEmail = true;
@@ -50,10 +47,8 @@ builder.Services.AddIdentity<UserApp, IdentityRole>(options =>
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
-// Configure Custom Token Options
 builder.Services.Configure<CustomTokenOption>(configuration.GetSection("TokenOption"));
 
-// Configure Authentication and JWT
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -75,26 +70,23 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = SignService.GetSymmetricSecurityKey(tokenOptions.SecurityKey),
         ValidateIssuerSigningKey = true,
         ValidateLifetime = true,
-        ClockSkew = TimeSpan.FromMinutes(1)
+        ClockSkew = TimeSpan.FromMinutes(1),
+        RoleClaimType = "roles"
     };
 });
 
-// Configure Authorization Policies
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("InstructorRole", policy => policy.RequireClaim("roles", "instructor"));
 });
 
-// Add Controllers and FluentValidation
 builder.Services.AddControllers().AddFluentValidation(options =>
 {
     options.RegisterValidatorsFromAssemblyContaining<Program>();
 });
 
-// Add Custom Validation Response
 builder.Services.UseCustomValidationResponse();
 
-// Configure Swagger for API documentation
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Mudemy.API", Version = "v1" });
@@ -102,7 +94,6 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// Apply Seed Data
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -110,7 +101,6 @@ using (var scope = app.Services.CreateScope())
     await SeedData.InitializeAsync(services);
 }
 
-// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
