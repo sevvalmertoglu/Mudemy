@@ -14,8 +14,8 @@ namespace Mudemy.Data
 
         {
         }
-
-        public DbSet<Course>? Course { get; set; }
+        
+        public DbSet<Course>? Courses { get; set; }
 
         public DbSet<UserRefreshToken>? UserRefreshTokens { get; set; }
 

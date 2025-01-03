@@ -13,7 +13,7 @@ namespace Mudemy.Core.Models
         public string? Description { get; set; }
         public string Category { get; set; } = default!;
         public string UserId { get; set; } = default!;
-        public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime? UpdatedAt { get; set; } = null;
     }
 }

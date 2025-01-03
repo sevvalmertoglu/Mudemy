@@ -44,9 +44,9 @@ namespace Mudemy.API.Controllers
 
         [Authorize(Policy = "InstructorRole")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCourse(int id, UpdateCourseDto updateCourseDto)
+        public async Task<IActionResult> UpdateCourse(int id, CourseDto courseDto)
         {
-            return ActionResultInstance(await _courseService.UpdateCourseAsync(id, updateCourseDto));
+            return ActionResultInstance(await _courseService.UpdateCourseAsync(id, courseDto));
         }
 
         [Authorize(Policy = "InstructorRole")]

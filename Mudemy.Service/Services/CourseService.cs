@@ -49,21 +49,22 @@ namespace Mudemy.Service.Services
             return Response<CourseDto>.Success(newCourseDto, 201);
         }
 
-        public async Task<Response<NoDataDto>> UpdateCourseAsync(int id, UpdateCourseDto updateCourseDto)
+        public async Task<Response<CourseDto>> UpdateCourseAsync(int id, CourseDto courseDto)
         {
             var existingCourse = await _courseRepository.GetByIdAsync(id);
             if (existingCourse == null)
-                return Response<NoDataDto>.Fail("Course not found", 404, true);
+                return Response<CourseDto>.Fail("Course not found", 404, true);
 
-            existingCourse.Name = updateCourseDto.Name;
-            existingCourse.Description = updateCourseDto.Description;
-            existingCourse.Price = updateCourseDto.Price;
-            existingCourse.Category = updateCourseDto.Category;
+            existingCourse.Name = courseDto.Name;
+            existingCourse.Description = courseDto.Description;
+            existingCourse.Price = courseDto.Price;
+            existingCourse.Category = courseDto.Category;
+            existingCourse.UpdatedAt = DateTime.UtcNow;
 
             _courseRepository.Update(existingCourse);
             await _unitOfWork.CommmitAsync();
 
-            return Response<NoDataDto>.Success(204);
+            return Response<CourseDto>.Success(courseDto, 201);
         }
 
         public async Task<Response<NoDataDto>> DeleteCourseAsync(int id)

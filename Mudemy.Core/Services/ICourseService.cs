@@ -11,7 +11,7 @@ namespace Mudemy.Core.Services
 
         Task<Response<CourseDto>> AddCourseAsync(CourseDto courseDto);
 
-        Task<Response<NoDataDto>> UpdateCourseAsync(int id, UpdateCourseDto updateCourseDto);
+        Task<Response<CourseDto>> UpdateCourseAsync(int id, CourseDto courseDto);
 
         Task<Response<NoDataDto>> DeleteCourseAsync(int id);
 
