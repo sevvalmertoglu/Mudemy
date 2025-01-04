@@ -70,7 +70,7 @@ namespace Mudemy.Service.Services
         {
             var existRefreshToken =
                 await _userRefreshTokenService.Where(x => x.Code == refreshToken).SingleOrDefaultAsync();
-            //fast fail
+
             if (existRefreshToken == null)
             {
                 return Response<TokenDto>.Fail("Refresh token not found", 404, true);

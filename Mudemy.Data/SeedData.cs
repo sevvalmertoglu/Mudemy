@@ -14,7 +14,6 @@ namespace Mudemy.Data
             var userManager = serviceProvider.GetRequiredService<UserManager<UserApp>>();
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            // Rolleri oluştur
             var roles = new[] { "User", "Instructor" };
             foreach (var role in roles)
             {
@@ -24,7 +23,6 @@ namespace Mudemy.Data
                 }
             }
 
-            // Kullanıcıları oluştur
             var users = new List<(string Email, string UserName, string Role)>
             {
                 ("user1@example.com", "user1", "User"),
