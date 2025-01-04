@@ -12,7 +12,15 @@ namespace Mudemy.Service
         public DtoMapper()
         {
             CreateMap<CourseDto, Course>().ReverseMap();
+            CreateMap<CreateCourseDto, Course>().ReverseMap();
             CreateMap<UserAppDto, UserApp>().ReverseMap();
+
+            CreateMap<Order, OrderDto>()
+            .ForMember(dest => dest.OrderDetails, opt => opt.MapFrom(src => src.OrderDetails));
+
+            CreateMap<OrderDetail, OrderDetailDto>()
+            .ForMember(dest => dest.CourseName, opt => opt.MapFrom(src => src.Course.Name))
+            .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Course.Price));
         }
     }
 }

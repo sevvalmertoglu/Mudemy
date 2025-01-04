@@ -8,11 +8,12 @@ namespace Mudemy.Core.Models
     public class Order
     {
         public int Id { get; set; }
-        public required string UserId { get; set; }
+        public required string UserId { get; set; } 
         public UserApp User { get; set; } = default!;
         public ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
         public DateTime OrderDate { get; set; }
         public decimal TotalPrice { get; set; }
+        public ICollection<Payment> Payments { get; set; } = new List<Payment>();
     }
 
     public class OrderDetail

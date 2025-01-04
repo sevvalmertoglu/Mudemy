@@ -10,6 +10,6 @@ namespace Mudemy.Core.Services
     {
         Task<Response<IEnumerable<OrderDto>>> GetOrdersByUserIdAsync(string userId);
         Task<Response<OrderDto>> GetOrderDetailsByIdAsync(int id);
-        Task<Response<NoDataDto>> PlaceOrderAsync(CreateOrderDto createOrderDto);
+        Task<Response<CreateOrderDto>> PlaceOrderAsync(CreateOrderDto createOrderDto);
     }
 }

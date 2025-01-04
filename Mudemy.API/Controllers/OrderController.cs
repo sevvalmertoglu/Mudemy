@@ -47,16 +47,6 @@ namespace Mudemy.API.Controllers
         [HttpPost]
         public async Task<IActionResult> PlaceOrder(CreateOrderDto createOrderDto)
         {
-            var userClaims = User.Claims;
-            var userId = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-
-            if (string.IsNullOrEmpty(userId))
-            {
-                return ActionResultInstance(Response<NoDataDto>.Fail(new ErrorDto("User ID is required", true), 400));
-            }
-
-            createOrderDto.UserId = userId;
-
             return ActionResultInstance(await _orderService.PlaceOrderAsync(createOrderDto));
         }
     }

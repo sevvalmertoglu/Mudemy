@@ -56,7 +56,7 @@ namespace Mudemy.Service.Services
 
             foreach (var userRoleName in userRoles)
             {
-                //userList.Add(new Claim(ClaimTypes.Role, userRoleName));
+               //userList.Add(new Claim(ClaimTypes.Role, userRoleName));
                 userList.Add(new Claim("roles", userRoleName));
             }
 
