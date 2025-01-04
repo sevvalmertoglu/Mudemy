@@ -15,6 +15,6 @@ namespace Mudemy.Core.Services
 
         Task AddRoleToFirstUser();
         Task<Response<UserAppDto>> DeleteUserAsync(string id); 
-        Task<Response<UserAppDto>> UpdateUserProfileAsync(string id, CreateUserDto updateUserDto);
+        Task<Response<UserAppDto>> UpdateUserProfileAsync(string id, UpdateUserDto updateUserDto);
     }
 }

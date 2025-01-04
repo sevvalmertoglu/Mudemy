@@ -50,7 +50,7 @@ namespace Mudemy.Service.Services
             return Response<UserAppDto>.Success(ObjectMapper.Mapper.Map<UserAppDto>(user), 200);
         }
 
-        public async Task AddRoleToFirstUser() // rol ataması yapar
+        public async Task AddRoleToFirstUser() 
         {
             var firstUser = _userManager.Users.FirstOrDefault();
 
@@ -59,10 +59,10 @@ namespace Mudemy.Service.Services
                 throw new InvalidOperationException("No users found in the database.");
             }
 
-            await _roleManager.CreateAsync(new IdentityRole("instructor")); // tablolara ekler
+            await _roleManager.CreateAsync(new IdentityRole("Instructor"));
             await _roleManager.CreateAsync(new IdentityRole("user"));
 
-            await _userManager.AddToRoleAsync(firstUser, "instructor");
+            await _userManager.AddToRoleAsync(firstUser, "Instructor");
             await _userManager.AddToRoleAsync(firstUser, "user");
         }
 
@@ -83,10 +83,10 @@ namespace Mudemy.Service.Services
                 return Response<UserAppDto>.Fail(new ErrorDto(errors, true), 500);
             }
 
-            return Response<UserAppDto>.Success(200); // Silme işlemi başarılı.
+            return Response<UserAppDto>.Success(200);
         }
 
-        public async Task<Response<UserAppDto>> UpdateUserProfileAsync(string id, CreateUserDto updateUserDto)
+        public async Task<Response<UserAppDto>> UpdateUserProfileAsync(string id, UpdateUserDto updateUserDto)
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
@@ -94,18 +94,49 @@ namespace Mudemy.Service.Services
                 return Response<UserAppDto>.Fail("User not found", 404, true);
             }
 
-            user.UserName = updateUserDto.UserName ?? user.UserName;
-            user.Email = updateUserDto.Email ?? user.Email;
-            
-            if (!string.IsNullOrEmpty(updateUserDto.Password))
+            switch (updateUserDto.UpdateType)
             {
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                await _userManager.ResetPasswordAsync(user, token, updateUserDto.Password);
+                case UpdateType.UserNameUpdate:
+                    user.UserName = updateUserDto.UserName ?? user.UserName;
+                    break;
+                case UpdateType.EmailUpdate:
+                    user.Email = updateUserDto.Email ?? user.Email;
+                    break;
+                case UpdateType.PasswordUpdate:
+                    if (!string.IsNullOrEmpty(updateUserDto.CurrentPassword) &&
+                        !string.IsNullOrEmpty(updateUserDto.NewPassword) &&
+                        !string.IsNullOrEmpty(updateUserDto.ConfirmNewPassword))
+                    {
+                        var isPasswordValid = await _userManager.CheckPasswordAsync(user, updateUserDto.CurrentPassword);
+                        if (!isPasswordValid)
+                        {
+                            return Response<UserAppDto>.Fail("Current password is incorrect", 400, true);
+                        }
+
+                        if (updateUserDto.NewPassword != updateUserDto.ConfirmNewPassword)
+                        {
+                            return Response<UserAppDto>.Fail("New passwords do not match", 400, true);
+                        }
+
+                        if (updateUserDto.CurrentPassword == updateUserDto.NewPassword)
+                        {
+                            return Response<UserAppDto>.Fail("New password cannot be the same as the current password", 400, true);
+                        }
+
+                        var result = await _userManager.ChangePasswordAsync(user, updateUserDto.CurrentPassword, updateUserDto.NewPassword);
+                        if (!result.Succeeded)
+                        {
+                            var errors = result.Errors.Select(x => x.Description).ToList();
+                            return Response<UserAppDto>.Fail(new ErrorDto(errors, true), 400);
+                        }
+                    }
+                    break;
             }
 
             await _userManager.UpdateAsync(user);
-            return Response<UserAppDto>.Success(200);
+            return Response<UserAppDto>.Success(ObjectMapper.Mapper.Map<UserAppDto>(user), 201);
         }
+
 
     }
 }

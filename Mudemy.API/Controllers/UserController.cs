@@ -22,6 +22,13 @@ namespace Mudemy.API.Controllers
             _userService = userService;
         }
 
+        [HttpGet("AddRoleToFirstUser")]
+        public async Task<IActionResult> AddRoleToFirstUser()
+        {
+            await _userService.AddRoleToFirstUser();
+            return Ok();
+        }
+
         [HttpPost("Register")]
         public async Task<IActionResult> CreateUser(CreateUserDto createUserDto)
         {
@@ -43,7 +50,7 @@ namespace Mudemy.API.Controllers
 
         [Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(string id, CreateUserDto updateUserDto)
+        public async Task<IActionResult> UpdateUser(string id, UpdateUserDto updateUserDto)
         {
             return ActionResultInstance(await _userService.UpdateUserProfileAsync(id, updateUserDto));
         }
