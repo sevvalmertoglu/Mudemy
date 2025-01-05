@@ -64,6 +64,8 @@ builder.Services.AddAuthentication(options =>
     {
         throw new InvalidOperationException("Token options are not configured properly.");
     }
+    options.IncludeErrorDetails = true; 
+
     options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
     {
         ValidIssuer = tokenOptions.Issuer,
