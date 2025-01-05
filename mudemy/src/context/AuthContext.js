@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const userData = await AuthService.login(email, password); 
-      setUser({ name: userData.name }); 
+      setUser({ name: userData.userName }); 
     } catch (error) {
       console.error("Login failed", error);
       throw error;
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
   const registerUser = async (userName, email, password) => {
     try {
       const userData = await AuthService.registerUser(userName, email, password); 
-      setUser({ name: userData.name });
+      setUser({ name: userData.userName });
     } catch (error) {
       console.error("Register failed", error);
       throw error;

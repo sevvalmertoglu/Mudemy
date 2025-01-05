@@ -10,10 +10,12 @@ import Profile from "./pages/Profile";
 import Cart from "./pages/Cart";
 import CourseDetail from "./pages/CourseDetail";
 import Register from "./pages/Register";
+import { ProfileProvider } from './context/ProfileContext';
 import "./App.css";
 
 export default function App() {
   return (
+  <ProfileProvider>
     <AuthProvider>
       <BrowserRouter>
         <CartProvider>
@@ -35,5 +37,6 @@ export default function App() {
         </CartProvider>
       </BrowserRouter>
     </AuthProvider>
+  </ProfileProvider>
   );
 }

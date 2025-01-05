@@ -1,6 +1,7 @@
 import React from 'react';
 import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
+import courseImage from '../images/courseImage.jpg'
 
 export default function Cart() {
   const { cart, increaseQuantity, decreaseQuantity, removeFromCart, clearCart } = useCart();
@@ -32,7 +33,7 @@ export default function Cart() {
               >
                 <div className="d-flex align-items-center">
                   <img
-                    src={item.image}
+                    src={courseImage} 
                     alt={item.title}
                     style={{
                       width: '80px',

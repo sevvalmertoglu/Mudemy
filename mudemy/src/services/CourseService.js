@@ -8,6 +8,7 @@ export const fetchProduct = async () => {
     const response = await axios.get(`${API_URL}/Course`);
     if (response.data && response.data.data) {
       return response.data.data.map((course) => ({
+        id: course.id,
         title: course.name,
         description: course.description,
         price: course.price,
@@ -27,6 +28,7 @@ export const fetchProductById = async (id) => {
     if (response.data && response.data.data) {
       const course = response.data.data;
       return {
+        id: course.id,
         title: course.name,
         description: course.description,
         price: course.price,

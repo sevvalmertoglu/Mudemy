@@ -16,7 +16,6 @@ export default function Home(){
   const productsPerPage = 6;
 
   useEffect(() => {
-    // API'den kursları al ve state'e kaydet
     fetchProduct()
       .then((fetchedProducts) => {
         setProducts(fetchedProducts);

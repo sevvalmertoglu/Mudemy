@@ -13,9 +13,11 @@ export default function CourseDetail() {
   const { addToCart } = useCart();
 
   useEffect(() => {
-    fetchProductById(id).then((res) => setProduct(res.data).catch((error) => console.error('Error fetching product:', error))
-  );
+    fetchProductById(id)
+    .then((product) => setProduct(product))
+    .catch((error) => console.error('Error fetching product:', error));
   }, [id]);
+  console.log('fetchProductById id:', id);
 
   if (!product) return <div className='container mt-4'>Loading...</div>;
 
