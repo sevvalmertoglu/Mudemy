@@ -12,7 +12,7 @@ export default function Register() {
   const onSubmit = (data) => {
     registerUser(data.username, data.email, data.password);
     alertify.success("Kayıt başarılı!");
-    navigate("/login"); 
+    navigate("/"); 
   };
 
   return (
