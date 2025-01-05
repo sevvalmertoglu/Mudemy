@@ -15,6 +15,8 @@ export default function Home(){
 
   const productsPerPage = 6;
 
+  const [loading, setLoading] = useState(true); 
+
   useEffect(() => {
     fetchProduct()
       .then((fetchedProducts) => {
@@ -23,6 +25,9 @@ export default function Home(){
       })
       .catch((error) => {
         console.error("Error fetching products:", error);
+      })
+      .finally(() => {
+        setLoading(false); 
       });
   }, []);
 
