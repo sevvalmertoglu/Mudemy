@@ -1,6 +1,7 @@
 import React from 'react';
 import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
+import courseImage from '../images/courseImage.jpg';
 
 export default function CourseCart({ product }) {
   const { addToCart } = useCart();
@@ -10,7 +11,7 @@ export default function CourseCart({ product }) {
       <div className='card h-100 shadow-lg d-flex flex-row align-items-center' style={{ borderRadius: "20px" }}>
         <Link to={`/product/${product.id}`} style={{ textDecoration: "none", flex: "1" }}>
           <img
-            src={product.image}
+            src={courseImage} 
             alt={product.title}
             className='card-img-top'
             style={{ objectFit: "contain", height: "150px", width: "150px" }}

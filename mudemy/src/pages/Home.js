@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchProduct } from "../services/api";
+import { fetchProduct } from "../services/CourseService";
 import CourseCart from "../components/CourseCart";
 
 
@@ -15,14 +15,16 @@ export default function Home(){
 
   const productsPerPage = 6;
 
-  useEffect(()=>{
-    fetchProduct().then((res) => {
-      const fetchedProduct = res.data;
-
-      setProducts(fetchedProduct);
-      setFilteredProducts(fetchedProduct);
-
-    });
+  useEffect(() => {
+    // API'den kursları al ve state'e kaydet
+    fetchProduct()
+      .then((fetchedProducts) => {
+        setProducts(fetchedProducts);
+        setFilteredProducts(fetchedProducts);
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+      });
   }, []);
 
   const handleSearch = (e) => {

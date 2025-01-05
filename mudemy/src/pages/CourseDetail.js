@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { fetchProductById } from '../services/api';
+import { fetchProductById } from '../services/CourseService';
+import courseImage from '../images/courseImage.jpg'
 
 export default function CourseDetail() {
   const { id } = useParams();
+  console.log("useParams'ten gelen id:", id);
 
   const [product, setProduct] = useState(null);
 
   const { addToCart } = useCart();
 
   useEffect(() => {
-    fetchProductById(id).then((res) => setProduct(res.data));
+    fetchProductById(id).then((res) => setProduct(res.data).catch((error) => console.error('Error fetching product:', error))
+  );
   }, [id]);
 
   if (!product) return <div className='container mt-4'>Loading...</div>;
@@ -22,7 +25,7 @@ export default function CourseDetail() {
 
         <div className='col-md-4'>
           <img
-            src={product.image}
+            src={courseImage} 
             alt={product.title}
             className='img-fluid'
             style={{
