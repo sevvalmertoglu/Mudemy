@@ -9,6 +9,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using Mudemy.Core.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Mudemy.Service.Services
 {
@@ -16,11 +19,13 @@ namespace Mudemy.Service.Services
     {
         private readonly IGenericRepository<Course> _courseRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CourseService(IGenericRepository<Course> courseRepository, IUnitOfWork unitOfWork)
+        public CourseService(IGenericRepository<Course> courseRepository, IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
         {
             _courseRepository = courseRepository;
             _unitOfWork = unitOfWork;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<Response<IEnumerable<CourseDto>>> GetAllCoursesAsync()
@@ -42,7 +47,28 @@ namespace Mudemy.Service.Services
 
         public async Task<Response<CourseDto>> AddCourseAsync(CourseDto courseDto)
         {
+            var claimsPrincipal = _httpContextAccessor.HttpContext?.User;
+
+            if (claimsPrincipal?.Identity == null || !claimsPrincipal.Identity.IsAuthenticated)
+            {
+                return Response<CourseDto>.Fail("User not Auth.", 401, true);
+            }
+
+            var roles = claimsPrincipal.Claims.FirstOrDefault(x => x.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
+
+            if (roles != "Instructor")
+            {
+                return Response<CourseDto>.Fail("You are not authorized", 401, true);
+            }
+
+            var userId = claimsPrincipal?.Claims.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Response<CourseDto>.Fail("UserId not found in token", 401, true);
+            }
             var course = ObjectMapper.Mapper.Map<Course>(courseDto);
+            course.UserId = userId; 
             await _courseRepository.AddAsync(course);
             await _unitOfWork.CommmitAsync();
             var newCourseDto = ObjectMapper.Mapper.Map<CourseDto>(course);

@@ -45,7 +45,7 @@ namespace Mudemy.Service.Services
             var userList = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, userApp.UserName ?? string.Empty),
-                new Claim(JwtRegisteredClaimNames.Sub, userApp.Id),
+                new Claim(ClaimTypes.NameIdentifier, userApp.Id),
                 new Claim(JwtRegisteredClaimNames.Email, userApp.Email ?? string.Empty),
                 new Claim(JwtRegisteredClaimNames.GivenName, userApp.UserName ?? string.Empty),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
@@ -57,8 +57,8 @@ namespace Mudemy.Service.Services
 
             foreach (var userRoleName in userRoles)
             {
-               //userList.Add(new Claim(ClaimTypes.Role, userRoleName));
-                userList.Add(new Claim("roles", userRoleName));
+               userList.Add(new Claim(ClaimTypes.Role, userRoleName));
+                //userList.Add(new Claim("roles", userRoleName));
             }
 
             userList.AddRange(audiences.Select(x => new Claim(JwtRegisteredClaimNames.Aud, x)));

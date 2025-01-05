@@ -35,21 +35,21 @@ namespace Mudemy.API.Controllers
             return ActionResultInstance(await _courseService.GetCourseByIdAsync(id));
         }
 
-        [Authorize(Policy = "InstructorRole")]
+        [Authorize(Roles = "Instructor")]
         [HttpPost]
         public async Task<IActionResult> SaveCourse(CourseDto courseDto)
         {
             return ActionResultInstance(await _courseService.AddCourseAsync(courseDto));
         }
 
-        [Authorize(Policy = "InstructorRole")]
+        [Authorize(Roles = "Instructor")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCourse(int id, CourseDto courseDto)
         {
             return ActionResultInstance(await _courseService.UpdateCourseAsync(id, courseDto));
         }
 
-        [Authorize(Policy = "InstructorRole")]
+        [Authorize(Roles = "Instructor")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourse(int id)
         {

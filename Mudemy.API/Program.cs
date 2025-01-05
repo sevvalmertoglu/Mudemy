@@ -19,6 +19,7 @@ using Mudemy.Core.UnitOfWork;
 using Mudemy.Data;
 using Mudemy.Data.Repositories;
 using Mudemy.Service.Services;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -76,7 +77,8 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidateLifetime = true,
         ClockSkew = TimeSpan.FromMinutes(1),
-        RoleClaimType = "roles"
+        RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
+        NameClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier" 
     };
 });
 
