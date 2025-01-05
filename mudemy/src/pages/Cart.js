@@ -2,9 +2,23 @@ import React from 'react';
 import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
 import courseImage from '../images/courseImage.jpg'
+import OrderService from '../services/OrderService';
 
 export default function Cart() {
   const { cart, increaseQuantity, decreaseQuantity, removeFromCart, clearCart } = useCart();
+
+  const handleOrder = async () => {
+    try {
+      for (const item of cart) {
+        await OrderService.createOrder(item.id);
+      }
+      clearCart();
+      alert('Order placed successfully!');
+    } catch (error) {
+      console.error('Order creation failed:', error);
+      alert('An error occurred while placing your order.');
+    }
+  };
 
   return (
     <div className='container mt-4'>
@@ -99,6 +113,7 @@ export default function Cart() {
                 borderRadius: '25px',
                 padding: '10px 20px',
               }}
+              onClick={handleOrder}
             >
               Proceed to Payment
             </Link>

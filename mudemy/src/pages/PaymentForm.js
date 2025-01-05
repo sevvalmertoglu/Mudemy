@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
 import alertify from 'alertifyjs';
+import PaymentService from '../services/PaymentService';
 
 export default function PaymentForm() {
   const { completePurchase } = useCart();
@@ -62,11 +63,13 @@ export default function PaymentForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handlePayment = (e) => {
+  const handlePayment = async (e) => {
     e.preventDefault();
     if (validateForm()) {
+      const paymentResponse = await PaymentService.makePayment(cardDetails);
+      if (paymentResponse.success) {
+        alertify.success('Payment Successful!'); }
       completePurchase();
-      alertify.success('Payment Successful!');
       navigate('/profile');
     } else {
       alertify.error('Please fix the errors in the form');
