@@ -8,7 +8,7 @@ export default function Footer(){
             <div className="container text-center">
                 <div className="row">
                         <div className="col-md-6">
-                            <p className="mb-0">&copy; 2025 Mudemy. Tüm hakları saklıdır.</p>
+                            <p className="mb-0">&copy; 2025 Mudemy. All rights reserved.</p>
                         </div>
                         <div className="col-md-6">
                             <ul className="list-inline -mb-0">
