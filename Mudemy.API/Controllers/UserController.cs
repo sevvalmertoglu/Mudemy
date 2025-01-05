@@ -40,6 +40,12 @@ namespace Mudemy.API.Controllers
         public async Task<IActionResult> GetUser()
         {
             var identity = HttpContext.User.Identity;
+            var claims = HttpContext.User.Claims;
+            foreach (var claim in claims)
+            {
+                Console.WriteLine($"{claim.Type}: {claim.Value}");
+            }
+
             if (identity == null || string.IsNullOrEmpty(identity.Name))
             {
                 return BadRequest("User name is null or empty.");

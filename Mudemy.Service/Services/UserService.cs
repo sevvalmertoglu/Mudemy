@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using Mudemy.Core.DTOs;
 using Mudemy.Core.Models;
 using Mudemy.Core.Services;
+using Microsoft.AspNetCore.Http;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Mudemy.Service.Services
 {
@@ -15,11 +18,13 @@ namespace Mudemy.Service.Services
     {
         private readonly UserManager<UserApp> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UserService(UserManager<UserApp> userManager, RoleManager<IdentityRole> roleManager)
+        public UserService(UserManager<UserApp> userManager, RoleManager<IdentityRole> roleManager, IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<Response<UserAppDto>> CreateUserAsync(CreateUserDto createUserDto)
@@ -40,7 +45,22 @@ namespace Mudemy.Service.Services
 
         public async Task<Response<UserAppDto>> GetUserByNameAsync(string userName)
         {
-            var user = await _userManager.FindByNameAsync(userName);
+            var claimsPrincipal = _httpContextAccessor.HttpContext?.User;
+
+            if (claimsPrincipal?.Identity == null || !claimsPrincipal.Identity.IsAuthenticated)
+            {
+                return Response<UserAppDto>.Fail("User not Auth.", 401, true);
+            }
+
+
+            var currentUserName = claimsPrincipal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value ?? claimsPrincipal.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.GivenName)?.Value;
+
+            if (string.IsNullOrWhiteSpace(currentUserName))
+            {
+                return Response<UserAppDto>.Fail("User Name is null.", 401, true);
+            }
+
+            var user = await _userManager.FindByNameAsync(currentUserName);
 
             if (user == null)
             {
