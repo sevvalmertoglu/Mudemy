@@ -12,7 +12,6 @@ namespace Mudemy.Service
         public DtoMapper()
         {
             CreateMap<CourseDto, Course>().ReverseMap();
-            CreateMap<CreateCourseDto, Course>().ReverseMap();
             CreateMap<UserAppDto, UserApp>().ReverseMap();
 
             CreateMap<Order, OrderDto>()
