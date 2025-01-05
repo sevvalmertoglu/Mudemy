@@ -48,7 +48,11 @@ This project was built using:
 
 <img width="1440" alt="Ekran Resmi 2025-01-06 00 04 34" src="https://github.com/user-attachments/assets/c0c53ea6-3e11-4ee3-b510-bae1d94dd61c" />
 
+<img width="1440" alt="Ekran Resmi 2025-01-06 00 47 14" src="https://github.com/user-attachments/assets/624373e8-e71f-4643-a545-b9c832b22605" />
 
+<img width="1440" alt="Ekran Resmi 2025-01-06 00 48 45" src="https://github.com/user-attachments/assets/0be6ddd8-d10e-4dd6-b2d1-1fbc5ad916bc" />
+
+<img width="1440" alt="Ekran Resmi 2025-01-06 00 49 09" src="https://github.com/user-attachments/assets/c7a585af-70cb-40e2-acff-6b67893885a0" />
 
 
 
