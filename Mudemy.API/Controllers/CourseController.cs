@@ -11,7 +11,6 @@ using Mudemy.Core.Services;
 
 namespace Mudemy.API.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CourseController : CustomBaseController

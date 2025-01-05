@@ -5,7 +5,7 @@ namespace Mudemy.Core.Services
 {
     public interface ICourseService
     {
-        Task<Response<IEnumerable<CourseDto>>> GetAllCoursesAsync();
+        Task<Response<IEnumerable<CreateCourseDto>>> GetAllCoursesAsync();
 
         Task<Response<CourseDto>> GetCourseByIdAsync(int id);
 

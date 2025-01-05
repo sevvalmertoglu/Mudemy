@@ -28,11 +28,11 @@ namespace Mudemy.Service.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<Response<IEnumerable<CourseDto>>> GetAllCoursesAsync()
+        public async Task<Response<IEnumerable<CreateCourseDto>>> GetAllCoursesAsync()
         {
             var courses = await _courseRepository.GetAllAsync();
-            var courseDtos = ObjectMapper.Mapper.Map<IEnumerable<CourseDto>>(courses);
-            return Response<IEnumerable<CourseDto>>.Success(courseDtos, 200);
+            var courseDtos = ObjectMapper.Mapper.Map<IEnumerable<CreateCourseDto>>(courses);
+            return Response<IEnumerable<CreateCourseDto>>.Success(courseDtos, 200);
         }
 
         public async Task<Response<CourseDto>> GetCourseByIdAsync(int id)
