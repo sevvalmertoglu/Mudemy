@@ -1,5 +1,5 @@
 # Mudemy
-Mini Course Sales Site: A responsive web application for displaying a list of courses with features like search, pagination, and detailed course information.
+Mini Course Sales Site: A responsive web application for displaying a list of courses with features like search, pagination, and detailed course information. **This project consists of frontend and backend branches.**
 
 ## Features
 - State Management: React Hooks (useState, useEffect)
